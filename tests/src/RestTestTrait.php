@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace UsefulTeam\Tests\JwtAuth;
+namespace CloakWP\Tests\JwtAuth;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
@@ -16,7 +16,8 @@ use GuzzleHttp\Cookie\SetCookie;
  *   var_dump($refreshToken, `wp user meta get 87310 jwt_auth_refresh_tokens`);
  * ```
  */
-trait RestTestTrait {
+trait RestTestTrait
+{
 
   protected Client $client;
   protected CookieJar $cookies;
@@ -27,7 +28,8 @@ trait RestTestTrait {
   protected ?string $token;
   protected ?string $refreshToken;
 
-  protected function setUp(): void {
+  protected function setUp(): void
+  {
     $this->cookies = new CookieJar();
     $this->httpClientConfig = [
       'base_uri' => $_ENV['URL'] ?? 'http://localhost',
@@ -56,17 +58,19 @@ trait RestTestTrait {
     $this->password = $_ENV['PASSWORD'] ?? null;
   }
 
-  protected function setCookie($name, $value, $domain): CookieJar {
+  protected function setCookie($name, $value, $domain): CookieJar
+  {
     $this->cookies->setCookie(new SetCookie([
-        'Domain'  => $domain,
-        'Name'    => $name,
-        'Value'   => $value,
-        'Discard' => true,
+      'Domain' => $domain,
+      'Name' => $name,
+      'Value' => $value,
+      'Discard' => true,
     ]));
     return $this->cookies;
   }
 
-  protected function getDomain(): string {
+  protected function getDomain(): string
+  {
     return parse_url($this->httpClientConfig['base_uri'], PHP_URL_HOST);
   }
 

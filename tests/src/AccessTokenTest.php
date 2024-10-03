@@ -1,19 +1,21 @@
 <?php declare(strict_types=1);
 
-namespace UsefulTeam\Tests\JwtAuth;
+namespace CloakWP\Tests\JwtAuth;
 
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\GuzzleException;
 use PHPUnit\Framework\TestCase;
 
-final class AccessTokenTest extends TestCase {
+final class AccessTokenTest extends TestCase
+{
 
   use RestTestTrait;
 
-    /**
-     * @throws GuzzleException
-     */
-    public function testToken(): string {
+  /**
+   * @throws GuzzleException
+   */
+  public function testToken(): string
+  {
     $response = $this->client->post('/wp-json/jwt-auth/v1/token', [
       'form_params' => [
         'username' => $this->username,
@@ -42,7 +44,8 @@ final class AccessTokenTest extends TestCase {
    * @depends testToken
    * @throws GuzzleException
    */
-  public function testTokenValidate(string $token): void {
+  public function testTokenValidate(string $token): void
+  {
     $this->assertNotEmpty($token);
 
     $response = $this->client->post('/wp-json/jwt-auth/v1/token/validate', [
@@ -60,7 +63,8 @@ final class AccessTokenTest extends TestCase {
    * @depends testToken
    * @throws GuzzleException
    */
-  public function testTokenValidateWithInvalidToken(string $token): void {
+  public function testTokenValidateWithInvalidToken(string $token): void
+  {
     $this->assertNotEmpty($token);
 
     $response = $this->client->post('/wp-json/jwt-auth/v1/token/validate', [
@@ -78,7 +82,8 @@ final class AccessTokenTest extends TestCase {
    * @depends testToken
    * @throws GuzzleException
    */
-  public function testTokenRefreshWithInvalidToken(string $token): void {
+  public function testTokenRefreshWithInvalidToken(string $token): void
+  {
     $this->assertNotEmpty($token);
 
     $response = $this->client->post('/wp-json/jwt-auth/v1/token/refresh', [
@@ -110,7 +115,8 @@ final class AccessTokenTest extends TestCase {
    * @depends testToken
    * @throws GuzzleException
    */
-  public function testTokenWithInvalidRefreshToken(string $token): void {
+  public function testTokenWithInvalidRefreshToken(string $token): void
+  {
     $this->assertNotEmpty($token);
 
     $cookies = [
