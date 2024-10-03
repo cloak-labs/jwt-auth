@@ -3,7 +3,7 @@
   "description": "JWT Auth",
   "type": "library",
   "version": "0.0.1",
-  "license": "GPLv3",
+  "license": "GPL-3.0-only",
   "authors": [
     {
       "name": "Bagus",
