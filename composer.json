@@ -2,7 +2,7 @@
   "name": "cloakwp/jwt-auth",
   "description": "JWT Auth",
   "type": "library",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "GPL-3.0-only",
   "authors": [
     {
@@ -16,7 +16,7 @@
   ],
   "minimum-stability": "stable",
   "require": {
-    "firebase/php-jwt": "^6.3"
+    "firebase/php-jwt": "^7.0"
   },
   "require-dev": {
     "php": ">=7.4",
