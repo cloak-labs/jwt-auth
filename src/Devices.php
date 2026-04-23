@@ -81,19 +81,22 @@ class Devices
    * @param string  $error_msg The failed message.
    * @param WP_User $user The user who owns the token.
    * @param string  $token The token.
-   * @param array   $payload The token's payload.
+   * @param object|array $payload The token's payload.
    *
    * @return string The error message if failed, empty string if it passes.
    */
   public function check_device_and_pass($error_msg, $user, $token, $payload)
   {
 
+    $payload_device = $this->get_payload_user_value($payload, 'device');
+    $payload_pass = $this->get_payload_user_value($payload, 'pass');
+
     // Check if token has device filled.
-    if (!empty($payload->data->user->device)) {
+    if (!empty($payload_device)) {
 
       $all_devices = get_user_meta($user->ID, 'jwt_auth_device', false);
 
-      if (!is_array($all_devices) || !in_array($payload->data->user->device, $all_devices, true)) {
+      if (!is_array($all_devices) || !in_array($payload_device, $all_devices, true)) {
         return 'device unnabled';
       }
     }
@@ -101,11 +104,58 @@ class Devices
     // Check if user changed the password.
     $pass = get_user_meta($user->ID, 'jwt_auth_pass', true);
 
-    if ($payload->data->user->pass !== $pass) {
+    // If payload does not contain a pass, fail validation without triggering warnings.
+    if ($payload_pass === null || (string) $payload_pass !== (string) $pass) {
       return 'password changed';
     }
 
     return '';
+  }
+
+  /**
+   * Safely read nested payload values that might be arrays or objects.
+   *
+   * @param object|array $payload The token payload.
+   * @param string       $key     The user field key to read.
+   *
+   * @return mixed|null
+   */
+  private function get_payload_user_value($payload, $key)
+  {
+    return $this->payload_get($payload, array('data', 'user', $key));
+  }
+
+  /**
+   * Safely walk an object/array structure by path.
+   *
+   * @param mixed $value The value to walk.
+   * @param array $path  The path segments.
+   *
+   * @return mixed|null
+   */
+  private function payload_get($value, $path)
+  {
+    foreach ($path as $segment) {
+      if (is_array($value)) {
+        if (!array_key_exists($segment, $value)) {
+          return null;
+        }
+        $value = $value[$segment];
+        continue;
+      }
+
+      if (is_object($value)) {
+        if (!isset($value->{$segment})) {
+          return null;
+        }
+        $value = $value->{$segment};
+        continue;
+      }
+
+      return null;
+    }
+
+    return $value;
   }
 
   /**
