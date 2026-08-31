@@ -1,5 +1,10 @@
 # JWT Auth
 
+> **CloakWP:** this package is a **legacy machine-auth fallback** for sites
+> still sending `WP_JWT`. New projects should use WordPress Application
+> Passwords (`WP_APPLICATION_USER` / `WP_APPLICATION_PASSWORD`) for server
+> REST and CloakWP frontend sessions for AdminBar / wp-admin. This package will eventually phase out/die.
+
 WordPress JWT (JSON Web Token) Authentication allows you to do REST API authentication via token. It's a simple, non-complex, and easy to use.
 
 This plugin probably is the most convenient way to do JWT Authentication in WordPress. Download it from [WordPress plugin page](https://wordpress.org/plugins/jwt-auth/).
